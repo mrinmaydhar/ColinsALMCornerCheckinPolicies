@@ -12,8 +12,6 @@ jobs:
     
     - name: Setup MSBuild
       uses: microsoft/setup-msbuild@v2
-      with:
-        vs-version: '17.10.4'
       
     - name: Navigate to Workspace
       run: cd $GITHUB_WORKSPACE
