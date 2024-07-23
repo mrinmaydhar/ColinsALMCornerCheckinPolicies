@@ -1,0 +1,28 @@
+name: VSIX generation
+on:
+  push:
+    branches: master
+
+jobs:
+  build:
+    runs-on: windows-2019
+
+    steps:
+    - uses: actions/checkout@v2
+    
+    - name: Setup MSBuild
+      uses: microsoft/setup-msbuild@v2
+      with:
+        vs-version: '17.10.4'
+      
+    - name: Navigate to Workspace
+      run: cd $GITHUB_WORKSPACE
+
+    - name: Restore Packages
+      run: msbuild.exe /target:Restore ./src/ColinsALMCheckinPolicies.sln
+
+    - name: Clean Solution
+      run: msbuild.exe /target:Clean ./src/ColinsALMCheckinPolicies.sln
+
+    - name: Build Solution
+      run: msbuild.exe /target:Build ./src/ColinsALMCheckinPolicies.sln
