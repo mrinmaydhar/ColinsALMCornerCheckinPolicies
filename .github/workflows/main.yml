@@ -24,3 +24,46 @@ jobs:
 
     - name: Build Solution
       run: msbuild.exe /target:Build ./src/ColinsALMCheckinPolicies.sln
+
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ github.ref }}
+        release_name: Release ${{ github.ref }}
+        body: |
+          VSIX packages
+        draft: false
+        prerelease: false
+
+    - name: Upload Release Asset 2017 VSIX
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./src/vsix
+        asset_name: ColinsALMCheckinPoliciesInstaller2017.vsix
+        asset_content_type: application/octet-stream
+        
+    - name: Upload Release Asset 2019 VSIX
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./src/vsix
+        asset_name: ColinsALMCheckinPoliciesInstaller2019.vsix
+        asset_content_type: application/octet-stream
+    
+    - name: Upload Release Asset 2022 VSIX
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./src/vsix
+        asset_name: ColinsALMCheckinPoliciesInstaller2022.vsix
+        asset_content_type: application/octet-stream
